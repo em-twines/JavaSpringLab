@@ -1,5 +1,7 @@
 package com.dcc.jpa_stream_lab.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,9 +78,17 @@ public class StreamLabService {
         // Research 'java create specific date' and 'java compare dates'
         // You may need to use the helper classes imported above!
 
-        
+        String date_string = "01-01-2016";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date = formatter.parse(date_string);
+            return users.findAll().stream().filter(u -> u.getRegistrationDate().before(date)).toList();
 
-        return null;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     public List<User> RProblemFive()
@@ -86,7 +96,19 @@ public class StreamLabService {
         // Write a query that gets all of the users who registered AFTER 2016 and BEFORE 2018
         // Return the list
 
-        return null;
+        String date_string = "01-01-2016";
+        String date_string1 = "01-01-2018";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date = formatter.parse(date_string);
+            Date date1 = formatter.parse(date_string1);
+
+            return users.findAll().stream().filter(u -> u.getRegistrationDate().after(date) && u.getRegistrationDate().before(date1)).toList();
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     // <><><><><><><><> R Actions (Read) with Foreign Keys <><><><><><><><><>
