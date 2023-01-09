@@ -3,6 +3,7 @@ package com.dcc.jpa_stream_lab.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,17 +169,50 @@ public class StreamLabService {
         // Write a query that retrieves all of the products in the shopping cart of users who have the role of "Employee".
     	// Return the list
 
-    	return null;
+        //TODO: identify all employees as objects, get all employees' items, translate to products, return list.
+
+        //list of names of employees:
+        Role employeeRole = roles.findAll().stream().filter(r -> r.getName().equals("Employee"))
+                .findFirst().orElse(null);
+        List<User> employees = users.findAll().stream().filter(u -> u.getRoles().contains(employeeRole)).toList();
+        List<Product> employeeProducts = employees.stream().map(e -> shoppingcartitems.findAll().stream().filter(s->s.getUser().equals(e)).map(p->p.getProduct()).toList()).toList();
+        //returns id's of all employees
+//        List <Integer> employeeIds = employees.stream().map(e -> e.getId()).toList();
+
+//        List <Product> employeeItems;
+//        employeeItems = employees.stream().map(e -> {
+//            List<Product> list = new ArrayList<>();
+//            for (ShoppingcartItem item : shoppingcartitems.findAll()) {
+//                if (item.getUser().equals(e)) {
+//                    Product product = item.getProduct();
+//                    list.add(product);
+//                }
+//            }
+//            return list;
+//        });
+        return employeeProducts;
+
     }
+
+    //    Long lengthEmployees = employees.stream().count();
+//        List<Product> employeeItems;
+//        List<Product> sum;
+//        for (int i = 0; i < lengthEmployees; i++) {
+//            employeeItems = shoppingcartitems.findAll().stream().filter(item ->
+//                    item.getUser().equals((employees.get(i))).map(s -> s.getProduct()).toList();
+//            sum += employeeItems;
+//        }
+//    	return sum;
+
 
     // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
 
-    // <><> C Actions (Create) <><>
+//     <><> C Actions (Create) <><>
 
     public User CDemoOne()
     {
         // Create a new User object and add that user to the Users table.
-        User newUser = new User();        
+        User newUser = new User();
         newUser.setEmail("david@gmail.com");
         newUser.setPassword("DavidsPass123");
         users.save(newUser);
@@ -189,9 +223,14 @@ public class StreamLabService {
     {
         // Create a new Product object and add that product to the Products table.
         // Return the product
-    	
 
-    	return null;
+        Product newProduct = new Product();
+        newProduct.setName("iPad 6th generation");
+        newProduct.setPrice(450);
+        newProduct.setDescription("Refurbished iPad, very good condition. Minor superficial damage.");
+        products.save(newProduct);
+        return newProduct;
+
 
     }
 
