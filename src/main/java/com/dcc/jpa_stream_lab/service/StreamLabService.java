@@ -3,7 +3,7 @@ package com.dcc.jpa_stream_lab.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -127,16 +127,39 @@ public class StreamLabService {
         // Write a query that retrieves all of the products in the shopping cart of the user who has the email "afton@gmail.com".
         // Return the list
 
-    	return null;
+        User myCustWithEmail = users.findAll().stream().filter(c ->
+                c.getEmail().equals("afton@gmail.com")).findFirst().orElse(null);
+//
+//        List<ShoppingcartItem> productsInCart = shoppingcartitems.findAll().stream().filter(i -> {
+//            return i.getUser(customerWithEmail).getShoppingcartItems();
+//        }).toList();
+
+//        Integer custWithEmailId = users.findAll().stream().filter(c -> c.getEmail().equals("afton@gmail.com")).findFirst().orElse(null).getId();
+
+        return shoppingcartitems.findAll().stream().filter(item ->
+                item.getUser().equals(myCustWithEmail)).map(s -> s.getProduct()).toList();
     }
 
     public long RProblemSeven()
     {
         // Write a query that retrieves all of the products in the shopping cart of the user who has the email "oda@gmail.com" and returns the sum of all of the products prices.
     	// Remember to break the problem down and take it one step at a time!
+        User myCustWithEmail = users.findAll().stream().filter(c ->
+                c.getEmail().equals("oda@gmail.com")).findFirst().orElse(null);
+        List<Product> allItems = shoppingcartitems.findAll().stream().filter(item ->
+                item.getUser().equals(myCustWithEmail)).map(s -> s.getProduct()).toList();
 
+        List<Integer> allPrices = allItems.stream().map(p -> p.getPrice()).toList();
 
-    	return 0;
+        Long length = allPrices.stream().count();
+
+        Integer sum = 0;
+
+        for (int i = 0; i < length; i++) {
+            sum += allPrices.get(i);
+        }
+
+        return sum;
 
     }
 
