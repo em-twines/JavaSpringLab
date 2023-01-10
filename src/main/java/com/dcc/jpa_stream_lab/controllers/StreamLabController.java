@@ -96,7 +96,7 @@ public class StreamLabController {
     public List<Role> CDemoTwo() {
     	return service.CDemoTwo();
     }
-    
+
     @PostMapping("/CProblemTwo")
     public ShoppingcartItem CProblemTwo() {
     	return service.CProblemTwo();

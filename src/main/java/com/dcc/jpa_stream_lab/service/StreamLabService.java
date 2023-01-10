@@ -223,14 +223,17 @@ public class StreamLabService {
 
     public ShoppingcartItem CProblemTwo()
     {
-    	// Create a new ShoppingCartItem to represent the new product you created being added to the new User you created's shopping cart.
+    	// Create a new ShoppingCartItem to represent the new product you created being added to the new User
+        // you created's shopping cart.
         // Add the product you created to the user we created in the ShoppingCart junction table.
         // Return the ShoppingcartItem
 
-
-
-    	return null;
-    	
+        ShoppingcartItem newShoppingcartItem = new ShoppingcartItem();
+        newShoppingcartItem.setQuantity(15);
+        newShoppingcartItem.setProduct(products.findAll().stream().filter(p -> p.getName().equals("iPad 6th generation")).findFirst().orElse(null));
+        newShoppingcartItem.setUser(users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null));
+        shoppingcartitems.save(newShoppingcartItem);
+        return newShoppingcartItem;
     }
 
     // <><> U Actions (Update) <><>
@@ -247,15 +250,24 @@ public class StreamLabService {
     {
         // Update the price of the product you created to a different value.
         // Return the updated product
-    	return null;
+
+        Product product = products.findAll().stream().filter(p -> p.getName().equals("iPad 6th generation")).findFirst().orElse(null);
+        product.setPrice(399);
+        return product;
     }
 
     public User UProblemTwo()
     {
         // Change the role of the user we created to "Employee"
-        // HINT: You need to delete the existing role relationship and then create a new UserRole object and add it to the UserRoles table
+        // HINT: You need to delete the existing role relationship and then create a new UserRole
+        // object and add it to the UserRoles table
 
-    	return null;
+        User user = users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null);
+        Role userOriginalRole = user.getRoles().stream().findFirst().orElse(null);
+        user.removeRole(userOriginalRole);
+        user.addRole(roles.findAll().stream().filter(r -> r.getName().equals("Employee")).findFirst().orElse(null));
+
+        return null;
     }
 
     //BONUS:
