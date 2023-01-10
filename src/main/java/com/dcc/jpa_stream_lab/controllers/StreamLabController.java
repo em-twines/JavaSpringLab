@@ -121,7 +121,22 @@ public class StreamLabController {
 
     //BONUS:
     // <><> D Actions (Delete) <><> (Add Below)
-    
 
-    
+    @DeleteMapping("/DProblemOne")
+    public Role DProblemOne() {
+        return service.DProblemOne();
+    }
+
+    @DeleteMapping("/DProblemTwo")
+    public List <ShoppingcartItem> DProblemTwo() {
+        return service.DProblemTwo();
+    }
+
+    @DeleteMapping("/DProblemThree")
+    public User DProblemThree() {
+        return service.DProblemThree();
+    }
+
+
+
 }

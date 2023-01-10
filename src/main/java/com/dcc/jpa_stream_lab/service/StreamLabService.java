@@ -22,26 +22,25 @@ import com.dcc.jpa_stream_lab.models.User;
 @Transactional
 @Service
 public class StreamLabService {
-	
-	@Autowired
-	private ProductsRepository products;
-	@Autowired
-	private RolesRepository roles;
-	@Autowired
-	private UsersRepository users;
-	@Autowired
-	private ShoppingcartItemRepository shoppingcartitems;
+
+    @Autowired
+    private ProductsRepository products;
+    @Autowired
+    private RolesRepository roles;
+    @Autowired
+    private UsersRepository users;
+    @Autowired
+    private ShoppingcartItemRepository shoppingcartitems;
 
 
     // <><><><><><><><> R Actions (Read) <><><><><><><><><>
 
     public List<User> RDemoOne() {
-    	// This query will return all the users from the User table.
-    	return users.findAll().stream().toList();
+        // This query will return all the users from the User table.
+        return users.findAll().stream().toList();
     }
 
-    public long RProblemOne()
-    {
+    public long RProblemOne() {
         // Return the COUNT of all the users from the User table.
         // You MUST use a .stream(), don't listen to the squiggle here!
         // Remember yellow squiggles are warnings and can be ignored.
@@ -50,14 +49,12 @@ public class StreamLabService {
     }
 
 
-    public List<Product> RDemoTwo()
-    {
+    public List<Product> RDemoTwo() {
         // This query will get each product whose price is greater than $150.
-    	return products.findAll().stream().filter(p -> p.getPrice() > 150).toList();
+        return products.findAll().stream().filter(p -> p.getPrice() > 150).toList();
     }
 
-    public List<Product> RProblemTwo()
-    {
+    public List<Product> RProblemTwo() {
         // Write a query that gets each product whose price is less than or equal to $100.
         // Return the list
 
@@ -65,15 +62,13 @@ public class StreamLabService {
         return products.findAll().stream().filter(p -> p.getPrice() <= 100).toList();
     }
 
-    public List<Product> RProblemThree()
-    {
+    public List<Product> RProblemThree() {
         // Write a query that gets each product that CONTAINS an "s" in the products name.
         // Return the list
         return products.findAll().stream().filter(p -> p.getName().contains("s")).toList();
     }
 
-    public List<User> RProblemFour()
-    {
+    public List<User> RProblemFour() {
         // Write a query that gets all the users who registered BEFORE 2016
         // Return the list
         // Research 'java create specific date' and 'java compare dates'
@@ -92,8 +87,7 @@ public class StreamLabService {
 
     }
 
-    public List<User> RProblemFive()
-    {
+    public List<User> RProblemFive() {
         // Write a query that gets all of the users who registered AFTER 2016 and BEFORE 2018
         // Return the list
 
@@ -114,18 +108,16 @@ public class StreamLabService {
 
     // <><><><><><><><> R Actions (Read) with Foreign Keys <><><><><><><><><>
 
-    public List<User> RDemoThree()
-    {
+    public List<User> RDemoThree() {
         // Write a query that retrieves all of the users who are assigned to the role of Customer.
 
         Role customerRole = roles.findAll().stream().filter(r -> r.getName().equals("Customer")).findFirst().orElse(null);
-    	List<User> customers = users.findAll().stream().filter(u -> u.getRoles().contains(customerRole)).toList();
+        List<User> customers = users.findAll().stream().filter(u -> u.getRoles().contains(customerRole)).toList();
 
         return customers;
     }
 
-    public List<Product> RProblemSix()
-    {
+    public List<Product> RProblemSix() {
         // Write a query that retrieves all of the products in the shopping cart of the user who has the email "afton@gmail.com".
         // Return the list
 
@@ -135,10 +127,9 @@ public class StreamLabService {
                 u.getUser().equals(myCustWithEmail)).map(p -> p.getProduct()).toList();
     }
 
-    public long RProblemSeven()
-    {
+    public long RProblemSeven() {
         // Write a query that retrieves all of the products in the shopping cart of the user who has the email "oda@gmail.com" and returns the sum of all of the products prices.
-    	// Remember to break the problem down and take it one step at a time!
+        // Remember to break the problem down and take it one step at a time!
 
         User myCustWithEmail = users.findAll().stream().filter(c ->
                 c.getEmail().equals("oda@gmail.com")).findFirst().orElse(null);
@@ -179,16 +170,11 @@ public class StreamLabService {
     }
 
 
-
-
-
-
     // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
 
 //     <><> C Actions (Create) <><>
 
-    public User CDemoOne()
-    {
+    public User CDemoOne() {
         // Create a new User object and add that user to the Users table.
         User newUser = new User();
         newUser.setEmail("david@gmail.com");
@@ -197,8 +183,7 @@ public class StreamLabService {
         return newUser;
     }
 
-    public Product CProblemOne()
-    {
+    public Product CProblemOne() {
         // Create a new Product object and add that product to the Products table.
         // Return the product
 
@@ -212,18 +197,16 @@ public class StreamLabService {
 
     }
 
-    public List<Role> CDemoTwo()
-    {
+    public List<Role> CDemoTwo() {
         // Add the role of "Customer" to the user we just created in the UserRoles junction table.
-    	Role customerRole = roles.findAll().stream().filter(r -> r.getName().equals("Customer")).findFirst().orElse(null);
-    	User david = users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null);
-    	david.addRole(customerRole);
-    	return david.getRoles();
+        Role customerRole = roles.findAll().stream().filter(r -> r.getName().equals("Customer")).findFirst().orElse(null);
+        User david = users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null);
+        david.addRole(customerRole);
+        return david.getRoles();
     }
 
-    public ShoppingcartItem CProblemTwo()
-    {
-    	// Create a new ShoppingCartItem to represent the new product you created being added to the new User
+    public ShoppingcartItem CProblemTwo() {
+        // Create a new ShoppingCartItem to represent the new product you created being added to the new User
         // you created's shopping cart.
         // Add the product you created to the user we created in the ShoppingCart junction table.
         // Return the ShoppingcartItem
@@ -238,16 +221,14 @@ public class StreamLabService {
 
     // <><> U Actions (Update) <><>
 
-    public User UDemoOne()
-    {
-         //Update the email of the user we created in problem 11 to "mike@gmail.com"
-          User user = users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null);
-          user.setEmail("mike@gmail.com");
-          return user;
+    public User UDemoOne() {
+        //Update the email of the user we created in problem 11 to "mike@gmail.com"
+        User user = users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null);
+        user.setEmail("mike@gmail.com");
+        return user;
     }
 
-    public Product UProblemOne()
-    {
+    public Product UProblemOne() {
         // Update the price of the product you created to a different value.
         // Return the updated product
 
@@ -256,8 +237,7 @@ public class StreamLabService {
         return product;
     }
 
-    public User UProblemTwo()
-    {
+    public User UProblemTwo() {
         // Change the role of the user we created to "Employee"
         // HINT: You need to delete the existing role relationship and then create a new UserRole
         // object and add it to the UserRoles table
@@ -265,23 +245,59 @@ public class StreamLabService {
         User user = users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null);
         Role userOriginalRole = user.getRoles().stream().findFirst().orElse(null);
         user.removeRole(userOriginalRole);
-        user.addRole(roles.findAll().stream().filter(r -> r.getName().equals("Employee")).findFirst().orElse(null));
 
         return null;
+
     }
 
     //BONUS:
     // <><> D Actions (Delete) <><>
 
     // For these bonus problems, you will also need to create their associated routes in the Controller file!
-    
+
     // DProblemOne
     // Delete the role relationship from the user who has the email "oda@gmail.com".
+
+    public Role DProblemOne() {
+
+        User user = users.findAll().stream().filter(u -> u.getEmail().equals("oda@gmail.com")).findFirst().orElse(null);
+        Role userOriginalRole = user.getRoles().stream().findFirst().orElse(null);
+        user.removeRole(userOriginalRole);
+
+        return null;
+    }
 
     // DProblemTwo
     // Delete all the product relationships to the user with the email "oda@gmail.com" in the ShoppingCart table.
 
+    public List<ShoppingcartItem> DProblemTwo() {
+
+        User odaByEmail = users.findAll().stream().filter(c ->
+                c.getEmail().equals("bibi@gmail.com")).findFirst().orElse(null);
+
+        if (Objects.nonNull(odaByEmail)) {
+            List<ShoppingcartItem> odaCart =
+                    shoppingcartitems.findAll().stream().filter(u -> u.getUser().equals(odaByEmail)).toList();
+            List<Product> odaProduct = odaCart.stream().map(i -> i.getProduct()).toList();
+            for (ShoppingcartItem item : odaCart) {
+                shoppingcartitems.delete(item);
+            }
+        }
+        return null;
+    }
+
     // DProblemThree
     // Delete the user with the email "oda@gmail.com" from the Users table.
+
+
+    // This deleted bibi, but I can't reproduce the effect with oda or mike.
+
+    public User DProblemThree() {
+        users.delete(users.findAll().stream().filter(c ->
+                c.getEmail().equals("mike@gmail.com")).findFirst().orElse(null));
+
+
+      return null;
+    }
 
 }
