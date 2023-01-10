@@ -159,48 +159,28 @@ public class StreamLabService {
 
     }
 
-    public List<Product> RProblemEight()
-    {
-        // Write a query that retrieves all of the products in the shopping cart of users who have the role of "Employee".
-    	// Return the list
+    public List<Product> RProblemEight() {
+        // Write a query that retrieves all the products in the shopping cart of users who have the role of "Employee".
+        // Return the list
 
         //TODO: identify all employees as objects, get all employees' items, translate to products, return list.
 
-        //list of names of employees:
         Role employeeRole = roles.findAll().stream().filter(r -> r.getName().equals("Employee"))
                 .findFirst().orElse(null);
         List<User> employees = users.findAll().stream().filter(u -> u.getRoles().contains(employeeRole)).toList();
-        List<ShoppingcartItem> employeeProducts = (List<ShoppingcartItem>) employees.stream().map(e ->
-                shoppingcartitems.findAll().stream().filter(s->s.getUser().equals(e)).toList());
 
-        return employeeProducts.stream().map(p->p.getProduct()).toList();
+        List<Product> employeeCarts = new ArrayList<Product>();
 
-        //returns id's of all employees
-//        List <Integer> employeeIds = employees.stream().map(e -> e.getId()).toList();
-
-//        List <Product> employeeItems;
-//        employeeItems = employees.stream(     ).map(e -> {
-//            List<Product> list = new ArrayList<>();
-//            for (ShoppingcartItem item : shoppingcartitems.findAll()) {
-//                if (item.getUser().equals(e)) {
-//                    Product product = item.getProduct();
-//                    list.add(product);
-//                }
-//            }
-//            return list;
-//        });
-
+        for (User e : employees) {
+            List<Product> userCart = shoppingcartitems.findAll().stream().filter(s -> s.getUser().equals(e)).map(p -> p.getProduct()).toList();
+            employeeCarts.addAll(userCart);
+        }
+        return employeeCarts;
     }
 
-    //    Long lengthEmployees = employees.stream().count();
-//        List<Product> employeeItems;
-//        List<Product> sum;
-//        for (int i = 0; i < lengthEmployees; i++) {
-//            employeeItems = shoppingcartitems.findAll().stream().filter(item ->
-//                    item.getUser().equals((employees.get(i))).map(s -> s.getProduct()).toList();
-//            sum += employeeItems;
-//        }
-//    	return sum;
+
+
+
 
 
     // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
