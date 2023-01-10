@@ -117,10 +117,11 @@ public class StreamLabService {
     public List<User> RDemoThree()
     {
         // Write a query that retrieves all of the users who are assigned to the role of Customer.
-    	Role customerRole = roles.findAll().stream().filter(r -> r.getName().equals("Customer")).findFirst().orElse(null);
+
+        Role customerRole = roles.findAll().stream().filter(r -> r.getName().equals("Customer")).findFirst().orElse(null);
     	List<User> customers = users.findAll().stream().filter(u -> u.getRoles().contains(customerRole)).toList();
 
-    	return customers;
+        return customers;
     }
 
     public List<Product> RProblemSix()
@@ -130,21 +131,15 @@ public class StreamLabService {
 
         User myCustWithEmail = users.findAll().stream().filter(c ->
                 c.getEmail().equals("afton@gmail.com")).findFirst().orElse(null);
-//
-//        List<ShoppingcartItem> productsInCart = shoppingcartitems.findAll().stream().filter(i -> {
-//            return i.getUser(customerWithEmail).getShoppingcartItems();
-//        }).toList();
-
-//        Integer custWithEmailId = users.findAll().stream().filter(c -> c.getEmail().equals("afton@gmail.com")).findFirst().orElse(null).getId();
-
-        return shoppingcartitems.findAll().stream().filter(item ->
-                item.getUser().equals(myCustWithEmail)).map(s -> s.getProduct()).toList();
+        return shoppingcartitems.findAll().stream().filter(u ->
+                u.getUser().equals(myCustWithEmail)).map(p -> p.getProduct()).toList();
     }
 
     public long RProblemSeven()
     {
         // Write a query that retrieves all of the products in the shopping cart of the user who has the email "oda@gmail.com" and returns the sum of all of the products prices.
     	// Remember to break the problem down and take it one step at a time!
+
         User myCustWithEmail = users.findAll().stream().filter(c ->
                 c.getEmail().equals("oda@gmail.com")).findFirst().orElse(null);
         List<Product> allItems = shoppingcartitems.findAll().stream().filter(item ->
@@ -175,12 +170,16 @@ public class StreamLabService {
         Role employeeRole = roles.findAll().stream().filter(r -> r.getName().equals("Employee"))
                 .findFirst().orElse(null);
         List<User> employees = users.findAll().stream().filter(u -> u.getRoles().contains(employeeRole)).toList();
-        List<Product> employeeProducts = employees.stream().map(e -> shoppingcartitems.findAll().stream().filter(s->s.getUser().equals(e)).map(p->p.getProduct()).toList()).toList();
+        List<ShoppingcartItem> employeeProducts = (List<ShoppingcartItem>) employees.stream().map(e ->
+                shoppingcartitems.findAll().stream().filter(s->s.getUser().equals(e)).toList());
+
+        return employeeProducts.stream().map(p->p.getProduct()).toList();
+
         //returns id's of all employees
 //        List <Integer> employeeIds = employees.stream().map(e -> e.getId()).toList();
 
 //        List <Product> employeeItems;
-//        employeeItems = employees.stream().map(e -> {
+//        employeeItems = employees.stream(     ).map(e -> {
 //            List<Product> list = new ArrayList<>();
 //            for (ShoppingcartItem item : shoppingcartitems.findAll()) {
 //                if (item.getUser().equals(e)) {
@@ -190,7 +189,6 @@ public class StreamLabService {
 //            }
 //            return list;
 //        });
-        return employeeProducts;
 
     }
 
@@ -248,6 +246,8 @@ public class StreamLabService {
     	// Create a new ShoppingCartItem to represent the new product you created being added to the new User you created's shopping cart.
         // Add the product you created to the user we created in the ShoppingCart junction table.
         // Return the ShoppingcartItem
+
+
 
     	return null;
     	
